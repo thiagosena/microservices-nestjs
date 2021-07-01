@@ -24,6 +24,25 @@ let ProductService = class ProductService {
     async all() {
         return this.productModel.find().exec();
     }
+    async create(data) {
+        return new this.productModel(data).save();
+    }
+    async findOne(id) {
+        return this.productModel.findOne({ id });
+    }
+    async update(id, data) {
+        return this.productModel.updateOne({ id }, data);
+    }
+    async delete(id) {
+        this.productModel.findOneAndDelete({ 'id': id }, null, (err, result) => {
+            if (err) {
+                console.log('error:', err);
+            }
+            else if (result) {
+                console.log(`the ${result.title} product has been deleted`);
+            }
+        });
+    }
 };
 ProductService = __decorate([
     common_1.Injectable(),

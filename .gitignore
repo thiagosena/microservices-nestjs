@@ -24,3 +24,6 @@ yarn-error.log
 /quick-start
 /example_dist
 /example
+
+# docker-conf
+.docker-conf/
