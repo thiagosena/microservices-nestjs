@@ -17,7 +17,7 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     common_1.Module({
         imports: [
-            mongoose_1.MongooseModule.forRoot('mongodb://nestjs:nestjs@localhost:27017/nestjs_main', {
+            mongoose_1.MongooseModule.forRoot('mongodb://nestjs:nestjs@localhost:27057/nestjs_main', {
                 autoCreate: true
             }),
             product_module_1.ProductModule
