@@ -1,4 +1,9 @@
 import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+import {library} from '@fortawesome/fontawesome-svg-core';
+
+library.add(fas);
 
 const Menu = () => {
    return (
@@ -7,14 +12,13 @@ const Menu = () => {
             <ul className="nav flex-column">
                <li className="nav-item">
                   <a className="nav-link" href="/">
-                     <span data-feather="home"/>
-                     Home
+                     <FontAwesomeIcon icon={['fas', 'home']}/> Home
                   </a>
                </li>
                <li className="nav-item">
-                  <a className="nav-link active" href="#">
-                     <span data-feather="shopping-cart"/>
-                     Products <span className="sr-only">(current)</span>
+                  <a className="nav-link active" href="/admin/products">
+                     <FontAwesomeIcon icon={['fas', 'shopping-cart']}/> Products
+                     <span className="sr-only">(current)</span>
                   </a>
                </li>
             </ul>
