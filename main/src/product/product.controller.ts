@@ -1,12 +1,13 @@
-import {Controller, Get, HttpService, Param, Post} from '@nestjs/common';
+import {Controller, Get, Inject, Param, Post} from '@nestjs/common';
 import {ProductService} from './product.service';
-import {EventPattern} from '@nestjs/microservices';
+import {ClientProxy, EventPattern} from '@nestjs/microservices';
+import {Product} from './product.model';
 
 @Controller('products')
 export class ProductController {
    constructor(
       private productService: ProductService,
-      private httpService: HttpService
+      @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy
    ) {
    }
 
@@ -15,16 +16,23 @@ export class ProductController {
       return this.productService.all();
    }
 
+   @Get(':id')
+   async get(@Param('id') id: number) {
+      return this.productService.findOne(id);
+   }
+
    @Post(':id/like')
    async like(@Param('id') id: number) {
-      const product = await this.productService.findOne(id);
-      this.httpService.post(`http://localhost:8001/api/products/${id}/like`, {}).subscribe(
-         res => {
-            console.log('liked', res);
-         }
-      )
+      const product: Product = await this.productService.findOne(id);
+      product.likes += 1
+
+      this.client.emit('product_liked', {
+         id,
+         likes: product.likes
+      });
+
       return this.productService.update(id, {
-         likes: product.likes + 1
+         likes: product.likes
       });
    }
 

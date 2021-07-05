@@ -9,14 +9,14 @@ async function bootstrap() {
          transport: Transport.RMQ,
          options: {
             urls: ['amqp://admin:admin@rabbitmq:5672'],
-            queue: 'main_queue',
+            queue: 'admin_queue',
             queueOptions: {
                durable: false
             }
          }
       }
    );
-   app.listen(() => console.log('Main is listening'));
+   app.listen(() => console.log('Admin is listening'));
 }
 
 bootstrap();

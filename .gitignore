@@ -13,12 +13,18 @@ packages/**/*.js
 
 # misc
 .DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 lerna-debug.log
 npm-debug.log
 yarn-error.log
 /**/npm-debug.log
 /packages/**/.npmignore
 /packages/**/LICENSE
+/**/.npm-cache
+/**/.history
 
 # example
 /quick-start

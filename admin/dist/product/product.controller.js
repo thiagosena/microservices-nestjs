@@ -16,6 +16,7 @@ exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
 const product_service_1 = require("./product.service");
 const microservices_1 = require("@nestjs/microservices");
+const product_entity_1 = require("./product.entity");
 let ProductController = class ProductController {
     constructor(productService, client) {
         this.productService = productService;
@@ -48,10 +49,9 @@ let ProductController = class ProductController {
         await this.productService.delete(id);
         this.client.emit('product_deleted', id);
     }
-    async like(id) {
-        const product = await this.productService.get(id);
-        return this.productService.update(id, {
-            likes: product.likes + 1
+    async like(product) {
+        await this.productService.update(product.id, {
+            likes: product.likes
         });
     }
 };
@@ -93,10 +93,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "delete", null);
 __decorate([
-    common_1.Post(':id/like'),
-    __param(0, common_1.Param('id')),
+    microservices_1.EventPattern('product_liked'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [product_entity_1.Product]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "like", null);
 ProductController = __decorate([

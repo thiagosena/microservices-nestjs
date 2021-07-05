@@ -12,12 +12,26 @@ const product_controller_1 = require("./product.controller");
 const product_service_1 = require("./product.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const product_model_1 = require("./product.model");
+const microservices_1 = require("@nestjs/microservices");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
     common_1.Module({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: product_model_1.Product.name, schema: product_model_1.ProductSchema }]),
+            microservices_1.ClientsModule.register([
+                {
+                    name: 'PRODUCT_SERVICE',
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: ['amqp://admin:admin@rabbitmq:5672'],
+                        queue: 'admin_queue',
+                        queueOptions: {
+                            durable: false
+                        }
+                    }
+                }
+            ]),
             common_1.HttpModule
         ],
         controllers: [product_controller_1.ProductController],

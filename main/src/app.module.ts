@@ -6,7 +6,7 @@ import {ProductModule} from './product/product.module';
 
 @Module({
    imports: [
-      MongooseModule.forRoot('mongodb://nestjs:nestjs@localhost:27057/nestjs_main', {
+      MongooseModule.forRoot('mongodb://nestjs:nestjs@mongodb:27017/nestjs_main', {
          autoCreate: true
       }),
       ProductModule

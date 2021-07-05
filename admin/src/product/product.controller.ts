@@ -1,6 +1,7 @@
 import {Body, Controller, Delete, Get, Inject, Param, Post, Put} from '@nestjs/common';
 import {ProductService} from './product.service';
-import {ClientProxy} from '@nestjs/microservices';
+import {ClientProxy, EventPattern} from '@nestjs/microservices';
+import {Product} from './product.entity';
 
 @Controller('products')
 export class ProductController {
@@ -61,11 +62,10 @@ export class ProductController {
       this.client.emit('product_deleted', id);
    }
 
-   @Post(':id/like')
-   async like(@Param('id') id: number) {
-      const product = await this.productService.get(id);
-      return this.productService.update(id, {
-         likes: product.likes + 1
+   @EventPattern('product_liked')
+   async like(product: Product) {
+      await this.productService.update(product.id, {
+         likes: product.likes
       });
    }
 }

@@ -17,20 +17,25 @@ const common_1 = require("@nestjs/common");
 const product_service_1 = require("./product.service");
 const microservices_1 = require("@nestjs/microservices");
 let ProductController = class ProductController {
-    constructor(productService, httpService) {
+    constructor(productService, client) {
         this.productService = productService;
-        this.httpService = httpService;
+        this.client = client;
     }
     async all() {
         return this.productService.all();
     }
+    async get(id) {
+        return this.productService.findOne(id);
+    }
     async like(id) {
         const product = await this.productService.findOne(id);
-        this.httpService.post(`http://localhost:8001/api/products/${id}/like`, {}).subscribe(res => {
-            console.log('liked', res);
+        product.likes += 1;
+        this.client.emit('product_liked', {
+            id,
+            likes: product.likes
         });
         return this.productService.update(id, {
-            likes: product.likes + 1
+            likes: product.likes
         });
     }
     async created(product) {
@@ -60,6 +65,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "all", null);
 __decorate([
+    common_1.Get(':id'),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "get", null);
+__decorate([
     common_1.Post(':id/like'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
@@ -86,8 +98,9 @@ __decorate([
 ], ProductController.prototype, "deleted", null);
 ProductController = __decorate([
     common_1.Controller('products'),
+    __param(1, common_1.Inject('PRODUCT_SERVICE')),
     __metadata("design:paramtypes", [product_service_1.ProductService,
-        common_1.HttpService])
+        microservices_1.ClientProxy])
 ], ProductController);
 exports.ProductController = ProductController;
 //# sourceMappingURL=product.controller.js.map
