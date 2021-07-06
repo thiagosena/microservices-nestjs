@@ -25,6 +25,8 @@ yarn-error.log
 /packages/**/LICENSE
 /**/.npm-cache
 /**/.history
+/**/dist/
+.env
 
 # example
 /quick-start
