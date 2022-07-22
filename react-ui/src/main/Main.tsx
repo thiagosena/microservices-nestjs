@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Product} from '../interfaces/Product';
+import React, { useEffect, useState } from 'react';
+import { Product } from '../interfaces/Product';
 
 const Main = () => {
    const [products, setProducts] = useState([] as Product[])
@@ -12,14 +12,20 @@ const Main = () => {
             const data = await response.json()
 
             setProducts(data)
+
+            if (data.length === 0) {
+               let element = document.getElementsByClassName('noProductsInCart')
+               element.item(0)?.classList.add('show')
+            }
          }
       )()
    }, [])
 
    const like = async (id: number) => {
-      await fetch(`http://localhost:8001/api/products/${id}/like`, {
+      console.log('id selected: ', id)
+      await fetch(`http://localhost:8002/api/products/${id}/like`, {
          method: 'POST',
-         headers: {'Content-Type': 'application/json'}
+         headers: { 'Content-Type': 'application/json' }
       })
 
       setProducts(products.map(
@@ -38,12 +44,12 @@ const Main = () => {
                <div className="container">
                   <div className="row">
                      <div className="col-sm-3">
-                        <div className="logo"><a href="#"><img src={'images/logo.png'}/></a></div>
+                        <div className="logo"><a href="#"><img src={'images/logo.png'} /></a></div>
                      </div>
                      <div className="col-sm-9">
                         <nav className="navbar navbar-expand-lg navbar-light bg-light">
                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                              <span className="navbar-toggler-icon"/>
+                              <span className="navbar-toggler-icon" />
                            </button>
                            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                               <div className="navbar-nav">
@@ -55,7 +61,7 @@ const Main = () => {
                      </div>
                   </div>
                </div>
-               <div className="banner_section">
+               {/* <div className="banner_section">
                   <div className="container-fluid">
                      <section className="slide-wrapper">
                         <div className="container-fluid">
@@ -88,12 +94,11 @@ const Main = () => {
                         </div>
                      </section>
                   </div>
-               </div>
+               </div> */}
             </div>
 
             <div className="layout_padding collection_section">
                <div className="container">
-
                   <div className="row">
                      {products.map(
                         (p: Product) => {
@@ -101,13 +106,13 @@ const Main = () => {
 
                               <div className="col-md-4" key={p.id}>
                                  <div className="card mb-4 shadow-sm">
-                                    <img src={p.image} width="420" alt={'Product'}/>
+                                    <img src={p.image} width="420" alt={'Product'} />
                                     <div className="card-body">
                                        <p className="card-text">{p.title}</p>
                                        <div className="d-flex justify-content-between align-items-center">
                                           <div className="btn-group">
                                              <button type="button" className="btn btn-sm btn-outline-secondary"
-                                                     onClick={() => like(p.id)}>Like
+                                                onClick={() => like(p.id)}>Like
                                              </button>
                                           </div>
                                           <small className="text-muted">{p.likes} likes</small>
@@ -118,6 +123,10 @@ const Main = () => {
                            )
                         }
                      )}
+                  </div>
+                  <div className={`noProductsInCart`}>
+                     <img width="120" src={'images/exclamation-circle.png'} alt="no-products-found"></img>
+                     <h3>No Products Have Been Added Yet!</h3>
                   </div>
                </div>
             </div>

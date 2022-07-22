@@ -26,6 +26,7 @@ export class ProductController {
       const product: Product = await this.productService.findOne(id);
       product.likes += 1
 
+      console.log(product)
       this.client.emit('product_liked', {
          id,
          likes: product.likes

@@ -1,7 +1,5 @@
 version: '3.8'
-
 services:
-
   app-admin:
     build: ./admin
     command: 'npm run start:dev'
@@ -14,7 +12,7 @@ services:
       - ./admin/:/home/node/app
   app-main:
     build: ./main
-    command: "npm run start:dev"
+    command: 'npm run start:dev'
     container_name: main-nestjs
     environment:
       - CHOCKIDAR_USEPOLLING=true
@@ -32,7 +30,7 @@ services:
       - ./admin/:/home/node/app
   amqp-main:
     build: ./main
-    command: "npm run listen"
+    command: 'npm run listen'
     container_name: amqp-main-nestjs
     environment:
       - CHOCKIDAR_USEPOLLING=true
@@ -40,7 +38,7 @@ services:
       - ./main/:/home/node/app
   postgres:
     image: postgres
-    container_name: postgres
+    container_name: postgres-nestjs
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
@@ -54,7 +52,7 @@ services:
 
   mongodb:
     image: mongo
-    container_name: mongodb
+    container_name: mongodb-nestjs
     restart: unless-stopped
     command: mongod --auth
     environment:
@@ -69,7 +67,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.8.18-management-alpine
-    container_name: rabbitmq
+    container_name: rabbitmq-nestjs
     volumes:
       - ./.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ./.docker-conf/rabbitmq/logs/:/var/log/rabbitmq
@@ -77,11 +75,11 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-admin}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}
     ports:
-      - 5672:5672    #amqp
-      - 15672:15672  #http
-      - 15692:15692  #prometheus
+      - 5672:5672 #amqp
+      - 15672:15672 #http
+      - 15692:15692 #prometheus
     healthcheck:
-      test: [ "CMD", "rabbitmqctl", "status" ]
+      test: ['CMD', 'rabbitmqctl', 'status']
       interval: 5s
       timeout: 20s
       retries: 5
