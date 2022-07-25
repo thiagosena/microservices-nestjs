@@ -1,15 +1,14 @@
-import {Controller, Get, Inject, Param, Post} from '@nestjs/common';
-import {ProductService} from './product.service';
-import {ClientProxy, EventPattern} from '@nestjs/microservices';
-import {Product} from './product.model';
+import { Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { ProductService } from './product.service';
+import { ClientProxy, EventPattern } from '@nestjs/microservices';
+import { Product } from './product.model';
 
 @Controller('products')
 export class ProductController {
    constructor(
       private productService: ProductService,
       @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy
-   ) {
-   }
+   ) { }
 
    @Get()
    async all() {

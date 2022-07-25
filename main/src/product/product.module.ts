@@ -1,13 +1,13 @@
-import {HttpModule, Module} from '@nestjs/common';
-import {ProductController} from './product.controller';
-import {ProductService} from './product.service';
-import {MongooseModule} from '@nestjs/mongoose';
-import {Product, ProductSchema} from './product.model';
-import {ClientsModule, Transport} from '@nestjs/microservices';
+import { Module } from '@nestjs/common';
+import { ProductController } from './product.controller';
+import { ProductService } from './product.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Product, ProductSchema } from './product.model';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
    imports: [
-      MongooseModule.forFeature([{name: Product.name, schema: ProductSchema}]),
+      MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
       ClientsModule.register([
          {
             name: 'PRODUCT_SERVICE',
@@ -21,7 +21,6 @@ import {ClientsModule, Transport} from '@nestjs/microservices';
             }
          }
       ]),
-      HttpModule
    ],
    controllers: [ProductController],
    providers: [ProductService]
